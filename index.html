@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JRE 聯合招聘考試實戰備考系統 | 政策分析・寫作框架・限時模擬</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Noto Sans TC & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Noto Sans TC"', 'Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        navy: {
+                            800: '#1e293b',
+                            900: '#0f172a',
+                            950: '#090d16'
+                        },
+                        gold: {
+                            500: '#d97706',
+                            600: '#b45309'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- Toast Notification Container (取代 alert()) -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- Top Navigation Header -->
+    <header class="bg-slate-900 text-white shadow-lg sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between py-4 gap-3">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="bg-amber-500 text-slate-950 p-2 rounded-lg font-bold text-lg shadow-sm">
+                            <i class="fa-solid fa-landmark"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-lg sm:text-xl font-bold tracking-wide text-white">JRE 聯合招聘考試備考系統</h1>
+                            <p class="text-xs text-slate-400">Joint Recruitment Examination (AO / EO / Trade Officer / Transport Officer)</p>
+                        </div>
+                    </div>
+                    <div class="md:hidden text-right">
+                        <span class="inline-block bg-slate-800 border border-slate-700 text-amber-400 text-xs px-2.5 py-1 rounded-full font-medium">
+                            3 小時｜一中一英
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Navigation Tabs -->
+                <nav class="flex space-x-1 sm:space-x-2 bg-slate-800/80 p-1 rounded-xl overflow-x-auto">
+                    <button onclick="switchTab('dashboard')" id="tab-dashboard" class="nav-btn active flex items-center gap-2 px-3.5 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap bg-amber-500 text-slate-950 shadow">
+                        <i class="fa-solid fa-chart-pie"></i> <span>備考總覽與清單</span>
+                    </button>
+                    <button onclick="switchTab('policy')" id="tab-policy" class="nav-btn flex items-center gap-2 px-3.5 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap text-slate-300 hover:text-white hover:bg-slate-700/60">
+                        <i class="fa-solid fa-newspaper"></i> <span>時事與政策分析庫</span>
+                    </button>
+                    <button onclick="switchTab('framework')" id="tab-framework" class="nav-btn flex items-center gap-2 px-3.5 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap text-slate-300 hover:text-white hover:bg-slate-700/60">
+                        <i class="fa-solid fa-sitemap"></i> <span>中英寫作框架生成器</span>
+                    </button>
+                    <button onclick="switchTab('simulator')" id="tab-simulator" class="nav-btn flex items-center gap-2 px-3.5 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap text-slate-300 hover:text-white hover:bg-slate-700/60">
+                        <i class="fa-solid fa-stopwatch"></i> <span>3 小時實戰模擬器</span>
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+
+        <!-- ==================== TAB 1: DASHBOARD & CHECKLIST ==================== -->
+        <section id="view-dashboard" class="space-y-6">
+            <!-- Hero / Exam Structure Banner -->
+            <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 rounded-2xl p-6 sm:p-8 text-white shadow-md border border-slate-700">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
+                    <div class="lg:col-span-2 space-y-3">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-300 text-xs font-semibold">
+                            <i class="fa-solid fa-calendar-check"></i> 每年 12 月舉行・政策分析與行政寫作能力評估
+                        </div>
+                        <h2 class="text-2xl sm:text-3xl font-bold leading-tight">掌握官員思維：利弊權衡、持份者視角與可行對策</h2>
+                        <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                            JRE 考試為時 <strong class="text-amber-400">3 小時</strong>，考生需完成<strong>兩篇長文（一篇中文、一篇英文）</strong>。考官重點評估你能否在有限時間內，以客觀、理性、具行政可行性（Feasibility）及大局觀的角度剖析香港公共政策。
+                        </p>
+                    </div>
+                    <div class="bg-slate-950/60 rounded-xl p-5 border border-slate-700/80 space-y-3">
+                        <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+                            <span class="text-xs text-slate-400">建議時間分配（每篇 90 分鐘）</span>
+                            <span class="text-xs font-bold text-amber-400">總計 180 分鐘</span>
+                        </div>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-slate-300"><i class="fa-solid fa-magnifying-glass text-amber-500 mr-1.5"></i>審題與列大綱 (Outline)</span>
+                                <span class="font-semibold text-white">15 分鐘</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-300"><i class="fa-solid fa-pen-nib text-emerald-400 mr-1.5"></i>正文撰寫 (Drafting)</span>
+                                <span class="font-semibold text-white">65 分鐘</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-300"><i class="fa-solid fa-check-double text-sky-400 mr-1.5"></i>潤飾與校對 (Proofreading)</span>
+                                <span class="font-semibold text-white">10 分鐘</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Two-Column Grid: Daily Checklist + LegCo Reading Guide -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Daily Preparation Checklist -->
+                <div class="lg:col-span-7 bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                                    <i class="fa-solid fa-list-check text-amber-600"></i> 每日備考習慣追蹤清單
+                                </h3>
+                                <p class="text-xs text-slate-500 mt-0.5">點擊勾選完成今日任務，進度會自動儲存於瀏覽器中</p>
+                            </div>
+                            <button onclick="resetChecklist()" class="text-xs text-slate-500 hover:text-amber-600 underline px-2 py-1">
+                                重設今日進度
+                            </button>
+                        </div>
+
+                        <!-- Progress Bar -->
+                        <div class="mb-5">
+                            <div class="flex justify-between text-xs font-semibold mb-1.5">
+                                <span class="text-slate-600">今日完成度</span>
+                                <span id="checklist-percent" class="text-amber-600">0%</span>
+                            </div>
+                            <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+                                <div id="checklist-bar" class="bg-amber-500 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Checklist Items -->
+                        <div id="daily-checklist" class="space-y-3">
+                            <!-- Rendered by JS -->
+                        </div>
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-slate-100 flex flex-wrap gap-2 justify-between items-center text-xs text-slate-500">
+                        <span><i class="fa-solid fa-lightbulb text-amber-500 mr-1"></i>貼士：每週至少完成 1 篇中文 + 1 篇英文計時模擬</span>
+                        <button onclick="switchTab('simulator')" class="text-amber-600 font-semibold hover:underline">立即開始計時練習 &rarr;</button>
+                    </div>
+                </div>
+
+                <!-- How to Read LegCo & Consultation Papers -->
+                <div class="lg:col-span-5 bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-4">
+                    <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-book-open-reader text-slate-700"></i> 立法會文件與政府諮詢文件拆解心法
+                    </h3>
+                    <p class="text-sm text-slate-600 leading-relaxed">
+                        閱讀官方文件時，切忌只背誦表面數據，應學習政府官員如何架構論點與回應質疑：
+                    </p>
+
+                    <div class="space-y-3">
+                        <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80">
+                            <div class="font-bold text-sm text-slate-900 mb-1 flex items-center gap-2">
+                                <span class="bg-slate-800 text-white text-xs w-5 h-5 rounded-full inline-flex items-center justify-center">1</span>
+                                留意「背景與問題陳述」(Background & Problem Statement)
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed">學習官員如何用客觀、中性的語言界定社會痛點（例如：人口老化對公營醫療系統構成結構性壓力），作為文章<strong>引言（Introduction）</strong>的標準示範。</p>
+                        </div>
+
+                        <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80">
+                            <div class="font-bold text-sm text-slate-900 mb-1 flex items-center gap-2">
+                                <span class="bg-slate-800 text-white text-xs w-5 h-5 rounded-full inline-flex items-center justify-center">2</span>
+                                拆解「利弊分析與風險評估」(Pros, Cons & Risk Mitigation)
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed">重點閱讀立法會秘書處「資料摘要」及「事務委員會討論文件」，觀察政府如何回應議員對<strong>財政承擔、執行難度、對弱勢社群影響</strong>的關注。</p>
+                        </div>
+
+                        <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80">
+                            <div class="font-bold text-sm text-slate-900 mb-1 flex items-center gap-2">
+                                <span class="bg-slate-800 text-white text-xs w-5 h-5 rounded-full inline-flex items-center justify-center">3</span>
+                                歸納「多管齊下」政策工具 (Policy Instruments)
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed">將建議歸類為：<strong>立法與規管、財政誘因/資助、公私營合作（PPP）、科技應用、公眾教育與宣傳</strong>，令建議層次分明。</p>
+                        </div>
+                    </div>
+
+                    <div class="pt-2 flex flex-wrap gap-2">
+                        <a href="https://www.legco.gov.hk/tc/index.html" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-xs font-medium bg-slate-100 hover:bg-slate-200 text-slate-800 px-3 py-2 rounded-lg transition">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i> 立法會資料庫
+                        </a>
+                        <a href="https://www.gov.hk/tc/residents/government/publication/consultation/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-xs font-medium bg-slate-100 hover:bg-slate-200 text-slate-800 px-3 py-2 rounded-lg transition">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i> 政府諮詢文件庫
+                        </a>
+                        <a href="https://www.policyaddress.gov.hk/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-xs font-medium bg-slate-100 hover:bg-slate-200 text-slate-800 px-3 py-2 rounded-lg transition">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i> 施政報告重點
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 2: POLICY & CURRENT AFFAIRS TRACKER ==================== -->
+        <section id="view-policy" class="hidden space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900">香港社會熱話與政策分析庫</h2>
+                    <p class="text-sm text-slate-500 mt-1">按 JRE 評分標準拆解各大政策議題：背景、利弊分析、持份者影響及短中長期建議</p>
+                </div>
+                <button onclick="toggleAddPolicyModal(true)" class="inline-flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold px-4 py-2.5 rounded-xl shadow-sm transition">
+                    <i class="fa-solid fa-plus"></i> 新增自訂政策筆記
+                </button>
+            </div>
+
+            <!-- Category Filter & Search -->
+            <div class="flex flex-col md:flex-row gap-3 justify-between items-stretch md:items-center">
+                <div id="policy-filters" class="flex flex-wrap gap-2">
+                    <button onclick="filterPolicies('all')" data-cat="all" class="cat-btn active px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-900 text-white transition">全部議題</button>
+                    <button onclick="filterPolicies('房屋土地')" data-cat="房屋土地" class="cat-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 transition">房屋土地</button>
+                    <button onclick="filterPolicies('醫療衛生')" data-cat="醫療衛生" class="cat-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 transition">醫療衛生</button>
+                    <button onclick="filterPolicies('創新科技')" data-cat="創新科技" class="cat-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 transition">創新科技</button>
+                    <button onclick="filterPolicies('環保減廢')" data-cat="環保減廢" class="cat-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 transition">環保減廢</button>
+                    <button onclick="filterPolicies('交通基建')" data-cat="交通基建" class="cat-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 transition">交通基建</button>
+                    <button onclick="filterPolicies('人口與勞工')" data-cat="人口與勞工" class="cat-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 transition">人口與勞工</button>
+                </div>
+                <div class="relative w-full md:w-64">
+                    <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                    <input type="text" id="policy-search" oninput="renderPolicies()" placeholder="搜尋關鍵字（如：公屋、醫療）..." class="w-full pl-8 pr-3 py-2 bg-white border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-amber-500">
+                </div>
+            </div>
+
+            <!-- Policy Cards Grid -->
+            <div id="policy-list" class="grid grid-cols-1 gap-6">
+                <!-- Populated by JS -->
+            </div>
+        </section>
+
+        <!-- ==================== TAB 3: BILINGUAL ESSAY STRUCTURE BUILDER ==================== -->
+        <section id="view-framework" class="hidden space-y-6">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900">中英雙語 JRE 高分寫作框架生成器</h2>
+                    <p class="text-sm text-slate-500 mt-1">利用標準四段／五段式行政分析結構快速擬定大綱，並一鍵插入高分政府公文詞彙與句式</p>
+                </div>
+                <div class="flex bg-slate-100 p-1 rounded-xl self-start">
+                    <button onclick="switchFrameworkLang('zh')" id="fw-lang-zh" class="px-4 py-2 rounded-lg text-sm font-semibold bg-white text-slate-900 shadow-sm transition">中文公文／議論文框架</button>
+                    <button onclick="switchFrameworkLang('en')" id="fw-lang-en" class="px-4 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-900 transition">English Policy Essay</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Left: Interactive Outline Builder -->
+                <div class="lg:col-span-7 bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                    <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-100">
+                        <h3 id="fw-title" class="font-bold text-slate-900 text-base">中文政策分析寫作大綱（建議字數：1,200 - 1,600 字）</h3>
+                        <div class="flex gap-2">
+                            <button onclick="loadSampleOutline()" class="text-xs bg-amber-50 text-amber-700 border border-amber-200 hover:bg-amber-100 px-3 py-1.5 rounded-lg font-medium transition">
+                                <i class="fa-solid fa-wand-magic-sparkles mr-1"></i>載入示範大綱
+                            </button>
+                            <button onclick="copyOutline()" class="text-xs bg-slate-900 text-white hover:bg-slate-800 px-3 py-1.5 rounded-lg font-medium transition">
+                                <i class="fa-regular fa-copy mr-1"></i>複製完整大綱
+                            </button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1" id="lbl-topic">擬定題目 / 政策議題 (Essay Topic)</label>
+                        <input type="text" id="fw-topic" placeholder="例如：試分析香港推行「低空經濟」的機遇與挑戰，並向政府提出可行建議。" class="w-full px-3.5 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    </div>
+
+                    <div id="fw-sections" class="space-y-4">
+                        <!-- Dynamically rendered Chinese or English outline blocks -->
+                    </div>
+                </div>
+
+                <!-- Right: High-Scoring Vocabulary & Sentence Bank -->
+                <div class="lg:col-span-5 bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col">
+                    <h3 class="font-bold text-slate-900 text-base mb-1 flex items-center gap-2">
+                        <i class="fa-solid fa-feather-pointed text-amber-600"></i>
+                        <span id="vocab-panel-title">高分政府公文詞彙與句式庫</span>
+                    </h3>
+                    <p class="text-xs text-slate-500 mb-4">點擊下方詞彙或句式，即可自動插入至你目前正在編輯的段落框中</p>
+
+                    <div id="vocab-list" class="space-y-4 overflow-y-auto max-h-[600px] pr-1">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 4: TIMED MOCK EXAM SIMULATOR ==================== -->
+        <section id="view-simulator" class="hidden space-y-6">
+            <!-- Timer & Controls Bar -->
+            <div class="bg-slate-900 text-white p-5 sm:p-6 rounded-2xl shadow-md border border-slate-700">
+                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                    <div class="flex items-center gap-4">
+                        <div class="bg-slate-800 border border-slate-700 px-5 py-3 rounded-xl text-center min-w-[160px]">
+                            <div class="text-[11px] uppercase tracking-wider text-slate-400 mb-0.5">剩餘時間</div>
+                            <div id="timer-display" class="text-3xl sm:text-4xl font-mono font-bold text-amber-400 tracking-wider">03:00:00</div>
+                        </div>
+                        <div class="space-y-1">
+                            <div id="timer-phase-badge" class="inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                                準備就緒
+                            </div>
+                            <p id="timer-advice" class="text-xs text-slate-300 max-w-md">
+                                選擇全卷（3 小時兩篇）或單篇（90 分鐘一篇）模式，開始模擬真實考場壓力。
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-2">
+                        <select id="timer-mode" onchange="setTimerMode()" class="bg-slate-800 border border-slate-600 text-white text-xs sm:text-sm rounded-xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                            <option value="180">全卷實戰 (180 分鐘 / 一中一英)</option>
+                            <option value="90">單篇練習 (90 分鐘 / 中文或英文)</option>
+                            <option value="15">快速列大綱訓練 (15 分鐘)</option>
+                        </select>
+                        <button onclick="startTimer()" id="btn-timer-start" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-xl transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-play"></i> 開始計時
+                        </button>
+                        <button onclick="pauseTimer()" id="btn-timer-pause" class="bg-amber-600 hover:bg-amber-500 text-white text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-xl transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-pause"></i> 暫停
+                        </button>
+                        <button onclick="resetTimer()" class="bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs sm:text-sm font-semibold px-3.5 py-2.5 rounded-xl transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-rotate-right"></i> 重設
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Prompt Generator Card -->
+            <div class="bg-white p-5 sm:p-6 rounded-2xl shadow-sm border border-slate-200">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+                    <div class="flex items-center gap-2">
+                        <span class="bg-amber-100 text-amber-800 text-xs font-bold px-2.5 py-1 rounded-md">模擬試題庫</span>
+                        <h3 class="font-bold text-slate-900 text-base">隨機抽取 JRE 歷屆風格模擬題目</h3>
+                    </div>
+                    <button onclick="generateRandomPrompt()" class="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold px-4 py-2 rounded-xl transition self-start sm:self-auto">
+                        <i class="fa-solid fa-shuffle"></i> 換一組模擬試題（一中一英）
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                        <div class="text-xs font-bold text-amber-700 mb-1">【中文試題】建議作答時間：90 分鐘</div>
+                        <p id="mock-prompt-zh" class="text-sm text-slate-800 font-medium leading-relaxed">
+                            近年香港面對人口結構高齡化及公營醫療系統負荷沉重的挑戰。政府正積極推動「基層醫療健康藍圖」及大灣區醫療合作。試分析有關政策在執行上的利弊及對不同持份者的影響，並向政府提出具體可行的改善建議。
+                        </p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                        <div class="text-xs font-bold text-sky-700 mb-1">【English Prompt】Suggested Time: 90 mins</div>
+                        <p id="mock-prompt-en" class="text-sm text-slate-800 font-medium leading-relaxed">
+                            To accelerate Hong Kong's transition into an international innovation and technology hub, the Government has introduced various measures to attract strategic enterprises and global talent. Discuss the potential benefits and challenges of these initiatives, and recommend practical measures to ensure sustainable economic returns for Hong Kong.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dual / Switchable Writing Workspace -->
+            <div class="bg-white p-5 sm:p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-3">
+                    <div class="flex bg-slate-100 p-1 rounded-xl">
+                        <button onclick="switchEditorPaper('zh')" id="paper-tab-zh" class="px-4 py-1.5 rounded-lg text-xs sm:text-sm font-semibold bg-white text-slate-900 shadow-sm transition">
+                            卷一：中文作答區
+                        </button>
+                        <button onclick="switchEditorPaper('en')" id="paper-tab-en" class="px-4 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-slate-600 hover:text-slate-900 transition">
+                            Paper 2: English Essay
+                        </button>
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-3 text-xs">
+                        <span class="bg-slate-100 text-slate-700 px-3 py-1.5 rounded-lg font-semibold">
+                            中文字數：<span id="count-zh" class="text-amber-600">0</span> 字
+                        </span>
+                        <span class="bg-slate-100 text-slate-700 px-3 py-1.5 rounded-lg font-semibold">
+                            English Words: <span id="count-en" class="text-sky-600">0</span> words
+                        </span>
+                        <button onclick="copyDraft()" class="bg-slate-100 hover:bg-slate-200 text-slate-800 px-3 py-1.5 rounded-lg font-medium transition">
+                            <i class="fa-regular fa-copy mr-1"></i>複製內容
+                        </button>
+                        <button onclick="downloadDraftTxt()" class="bg-slate-900 hover:bg-slate-800 text-white px-3 py-1.5 rounded-lg font-medium transition">
+                            <i class="fa-solid fa-download mr-1"></i>匯出 .txt
+                        </button>
+                    </div>
+                </div>
+
+                <div>
+                    <textarea id="essay-editor-zh" oninput="handleEditorInput()" rows="16" placeholder="在此開始撰寫中文文章（系統會自動儲存你的草稿）...&#10;&#10;建議結構：&#10;一、引言（點出政策背景、社會痛點及文章主旨）&#10;二、政策成效與潛在利弊分析（權衡經濟效益、財政負擔與執行阻力）&#10;三、持份者影響評估（市民、業界、弱勢社群、政府）&#10;四、具體可行建議（短期紓緩與中長期制度改革，多管齊下）&#10;五、總結（重申核心觀點，展現前瞻視野）" class="w-full p-4 border border-slate-200 rounded-xl text-sm sm:text-base leading-relaxed focus:outline-none focus:ring-2 focus:ring-amber-500 font-sans"></textarea>
+
+                    <textarea id="essay-editor-en" oninput="handleEditorInput()" rows="16" placeholder="Start drafting your English policy essay here (auto-saved locally)...&#10;&#10;Recommended Structure:&#10;1. Introduction (Context, policy dilemma, and clear thesis statement)&#10;2. Critical Evaluation of Pros & Cons (Efficiency vs. fiscal sustainability & implementation hurdles)&#10;3. Stakeholder Impact Analysis (General public, business sector, vulnerable groups, Government)&#10;4. Actionable Recommendations (Short-term quick wins & long-term structural reforms)&#10;5. Conclusion (Synthesize key arguments with a forward-looking perspective)" class="hidden w-full p-4 border border-slate-200 rounded-xl text-sm sm:text-base leading-relaxed focus:outline-none focus:ring-2 focus:ring-sky-500 font-sans"></textarea>
+                </div>
+
+                <div class="flex justify-between items-center text-xs text-slate-400">
+                    <span><i class="fa-solid fa-cloud-arrow-up text-emerald-500 mr-1"></i>草稿已自動儲存於本地瀏覽器</span>
+                    <button onclick="clearCurrentDraft()" class="text-rose-500 hover:underline">清空當前作答區</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Add Custom Policy Modal -->
+    <div id="add-policy-modal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200 p-6 space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                <h3 class="text-lg font-bold text-slate-900">新增自訂政策筆記</h3>
+                <button onclick="toggleAddPolicyModal(false)" class="text-slate-400 hover:text-slate-700 text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <form id="add-policy-form" onsubmit="saveCustomPolicy(event)" class="space-y-3 text-sm">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">政策類別 *</label>
+                        <select id="new-pol-cat" required class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500">
+                            <option value="房屋土地">房屋土地</option>
+                            <option value="醫療衛生">醫療衛生</option>
+                            <option value="創新科技">創新科技</option>
+                            <option value="環保減廢">環保減廢</option>
+                            <option value="交通基建">交通基建</option>
+                            <option value="人口與勞工">人口與勞工</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">議題標題 *</label>
+                        <input type="text" id="new-pol-title" required placeholder="例如：北部都會區片區開發模式" class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">背景與現況 (Background) *</label>
+                    <textarea id="new-pol-bg" required rows="2" placeholder="簡述政策推出原因及立法會討論焦點..." class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500"></textarea>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-emerald-700 mb-1">正面效益 (Pros) *</label>
+                        <textarea id="new-pol-pros" required rows="2" placeholder="列出政策預期帶來的正面影響..." class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-rose-700 mb-1">潛在弊端與挑戰 (Cons) *</label>
+                        <textarea id="new-pol-cons" required rows="2" placeholder="列出財政、執行或社會阻力..." class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500"></textarea>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">持份者影響分析 (Stakeholders) *</label>
+                    <textarea id="new-pol-stake" required rows="2" placeholder="例如：市民、商界/業界、政府庫房、弱勢社群..." class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-amber-700 mb-1">可行建議 (Recommendations - 短期/中長期) *</label>
+                    <textarea id="new-pol-rec" required rows="2" placeholder="提出具行政可行性的政策優化建議..." class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500"></textarea>
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="toggleAddPolicyModal(false)" class="px-4 py-2 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 font-medium">取消</button>
+                    <button type="submit" class="px-4 py-2 rounded-xl bg-slate-900 text-white hover:bg-slate-800 font-semibold">儲存政策筆記</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-5 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500 gap-2">
+            <div>JRE 聯合招聘考試備考系統 &copy; 2026 — 專為香港政府政務主任（AO）、行政主任（EO）等職系考生設計</div>
+            <div>所有筆記與模擬作答均自動儲存於你的本地裝置</div>
+        </div>
+    </footer>
+
+    <script>
+        // ==================== 1. STATE & INITIAL DATA ====================
+        const DEFAULT_CHECKLIST = [
+            { id: 'c1', text: '閱讀今日香港本地新聞頭條，標記 1-2 則與公共政策相關的社會熱話', tag: '每日時事', done: false },
+            { id: 'c2', text: '瀏覽立法會事務委員會文件或政府新聞公報，摘錄官員「回應質疑」的論點', tag: '官方視角', done: false },
+            { id: 'c3', text: '針對一個政策議題，練習列出「利弊分析 (Pros & Cons)」及「四類持份者影響」', tag: '思維訓練', done: false },
+            { id: 'c4', text: '背誦並運用 3 組高分中英文公文連接詞與政策建議句式', tag: '語文累積', done: false },
+            { id: 'c5', text: '進行 15 分鐘限時審題與列寫作大綱練習（維持一中一英交替）', tag: '實戰框架', done: false }
+        ];
+
+        const DEFAULT_POLICIES = [
+            {
+                id: 'p1',
+                category: '房屋土地',
+                title: '簡約公屋與過渡性房屋供應（加快基層上樓步伐）',
+                date: '重點追蹤議題',
+                background: '香港傳統公屋平均輪候時間長期處於高位，不少基層家庭居於環境惡劣的劏房。政府推出「簡約公屋」，採用組裝合成建築法（MiC）快速興建短期公營房屋，以填補未來數年公屋落成量的空窗期。',
+                pros: '1. 善用 MiC 技術大幅縮短建屋時間（約 1-2 年內落成），即時改善劏房戶居住環境及減輕租金負擔。\n2. 配合「解決劏房問題」工作組定立的最低標準，有助逐步取締劣質劏房。',
+                cons: '1. 造價及營運開支龐大，部分市區選址曾引發地區人士對交通配套及社區設施負荷的關注。\n2. 屬臨時性質（營運期約 5 年），土地長遠用途交接及住戶二次搬遷需妥善規劃，否則易招致「成本效益」質疑。',
+                stakeholders: '• 輪候公屋基層市民：直接受惠，生活質素提升，但部分偏遠選址增加通勤時間與開支。\n• 地區居民與區議會：關注交通擠塞、社區資源攤薄及物業觀感。\n• 政府庫房與建築業界：政府需承擔高額資本及營運開支；本地 MiC 建築產業鏈獲發展契機。',
+                recommendations: '• 短期：加強「簡約公屋」項目的接駁巴士路線及社福支援服務（如課後託管、就業轉介），提高偏遠項目入住率。\n• 中長期：優化 MiC 組件標準化以降低建造成本，並建立系統化的「期滿退場與銜接傳統公屋機制」，確保資源無縫過渡。'
+            },
+            {
+                id: 'p2',
+                category: '醫療衛生',
+                title: '公營醫療人手短缺與跨境／大灣區醫療合作（如長者醫療券擴展）',
+                date: '重點追蹤議題',
+                background: '香港人口急速高齡化，慢性病患者增加，導致醫管局專科門診輪候時間過長及前線醫護流失。政府透過修例引入非本地培訓醫護人員，並擴大「長者醫療券大灣區試點計劃」及跨境救護車直通安排。',
+                pros: '1. 引入海外及內地合資格醫護人員可即時紓緩前線人手瓶頸。\n2. 跨境醫療合作為居於大灣區的香港長者提供便利，同時分流本港公營醫療系統的部分非緊急需求。',
+                cons: '1. 語言溝通（廣東話及繁體字病歷習慣）、醫療文化差異及跨境病歷互通（醫健通對接）仍存磨合挑戰。\n2. 市民對境外醫療機構的監管標準、醫療事故投訴機制及保險理賠存有疑慮。',
+                stakeholders: '• 長者及慢性病患者：獲得更多就醫選擇與較短輪候時間，但需適應跨境就診流程。\n• 本地前線醫護：工作壓力有望逐步減輕，但關注培訓資源分配及晉升階梯。\n• 政府與醫管局：需平衡公帑運用效率、醫療質素監管及大灣區融合政策目標。',
+                recommendations: '• 短期：完善「醫健通」跨境病歷雙向安全互通，並為試點醫院設立清晰收費透明度及投訴處理機制。\n• 中長期：強化「基層醫療健康藍圖」，透過地區康健中心推行「慢性疾病共同治理先導計劃」，從源頭減少住院需求。'
+            },
+            {
+                id: 'p3',
+                category: '創新科技',
+                title: '發展「低空經濟」（Low-altitude Economy）與無人機應用監管沙盒',
+                date: '重點追蹤議題',
+                background: '國家將低空經濟列為戰略性新興產業，香港特區政府成立「發展低空經濟工作組」，推行「監管沙盒」試點項目，探索無人機在跨境物流、緊急救援、基建巡檢及旅遊觀光等領域的應用。',
+                pros: '1. 善用香港國際航空樞紐及科研優勢，開拓高增值創科產業鏈與測試認證服務。\n2. 提升城市管理效率（如偏遠離島送藥、斜坡及橋樑檢測），減低高空作業安全風險。',
+                cons: '1. 香港高樓密集、維港兩岸空域繁忙且受無線電訊號干擾較大，對飛航安全及精準導航技術要求極高。\n2. 現有《小型無人機令》在超視距飛行（BVLOS）及載重限制上仍需修訂，市民亦關注私隱外洩及噪音問題。',
+                stakeholders: '• 創科企業與物流業界：獲得測試場地與商業化機會，但初期合規與保險成本高昂。\n• 普羅市民：受惠於更快捷的配送服務，但憂慮低空飛行帶來的噪音滋擾與家居私隱。\n• 民航處及執法部門：需升級低空空域管理系統，平衡安全監管與鼓勵創新。',
+                recommendations: '• 短期：優先在科學園、數碼港及離島等人口密度較低區域批出「監管沙盒」航線，累積安全數據。\n• 中長期：檢討並修訂民航法例以配合超視距及跨境低空飛行，並與大灣區城市對接低空航路標準與清關程序。'
+            },
+            {
+                id: 'p4',
+                category: '環保減廢',
+                title: '都市固體廢物減廢策略與擴大社區回收網絡（綠在區區）',
+                date: '重點追蹤議題',
+                background: '香港堆填區容量日趨飽和，政府暫緩實施垃圾收費後，轉而集中資源加強公眾減廢教育、擴大「綠在區區」回收網絡、增設智能廚餘回收桶，並推進轉廢為能設施（I·PARK）建設。',
+                pros: '1. 在社會配套尚未完全成熟前暫緩強制收費，避免引發前線清潔工及基層市民的執行混亂與經濟壓力。\n2. 透過「綠綠賞」積分獎賞及增設屋邨廚餘機，以正面誘因成功帶動市民參與分類回收的習慣。',
+                cons: '1. 缺乏經濟誘因（污者自付）下，單靠自願回收難以在短期內大幅削減整體棄置量。\n2. 智能廚餘機偶現滿溢或故障，部分舊區「三無大廈」缺乏物業管理，難以有效設置回收設施。',
+                stakeholders: '• 市民與基層家庭：無需即時承擔額外垃圾袋開支，但部分舊區居民反映回收點距離較遠。\n• 物管公司與清潔工人：減少了檢查違規垃圾的執法摩擦，但需應付增加的廚餘清運工作。\n• 環保回收業界與政府：政府需持續投入公帑補貼回收網絡營運，回收商則期望穩定的下游出路。',
+                recommendations: '• 短期：在全港公共屋邨及大型私人屋苑全面普及智能廚餘回收桶，並加強維修保養及滿溢自動通報。\n• 中長期：推進「生產者責任計劃」（涵蓋塑膠飲料容器及紙包飲品盒），並加快興建現代化轉廢為能焚化設施。'
+            },
+            {
+                id: 'p5',
+                category: '交通基建',
+                title: '智慧出行、三隧分流成效與北部都會區鐵路基建推展',
+                date: '重點追蹤議題',
+                background: '政府落實三隧「分時段收費」並推行「易通行」不停車繳費系統以理順過海交通；同時全力推展《香港主要運輸基建發展藍圖》，包括北環線及港深西部鐵路，以「基建先行」帶動北部都會區發展。',
+                pros: '1. 三隧分時段收費有效遏抑繁忙時段非必要車流，紅隧及東隧車龍明顯縮短，巴士行車時間更穩定。\n2. 跨境鐵路網絡強化港深「一小時生活圈」，釋放新界北土地發展潛力。',
+                cons: '1. 鐵路基建造價高昂且工程週期長，在政府面對財政赤字下，如何創新融資模式成為關鍵考驗。\n2. 過海隧道分流後，部分連接路（如西隧九龍出口）在特定時段仍出現局部擠塞。',
+                stakeholders: '• 公共交通乘客：過海巴士準點率提升，出行時間縮短。\n• 職業司機與私家車車主：的士及商用車受惠於劃一收費，但私家車車主在繁忙時段出行成本增加。\n• 政府庫房與發展商：基建投資龐大，政府需研究「鐵路加物業」或公私營合作模式分擔財務壓力。',
+                recommendations: '• 短期：利用大數據持續微調三隧不同時段的收費水平及過渡期收費階梯，並優化連接路燈號控制。\n• 中長期：引入多元基建融資方案（如發債、片區開發模式），並加強智能交通管理系統（ITS）及自動駕駛測試。'
+            }
+        ];
+
+        const VOCAB_DATA = {
+            zh: [
+                {
+                    category: '一、引言與問題界定 (Introduction)',
+                    items: [
+                        { term: '結構性挑戰 / 瓶頸', example: '隨著人口高齡化加劇，本港公營醫療系統正面臨嚴峻的結構性挑戰。' },
+                        { term: '刻不容緩 / 迫在眉睫', example: '理順土地房屋供應、改善基層居住環境已成為特區政府刻不容緩的首要任務。' },
+                        { term: '兼顧……與…… / 取得平衡', example: '政府在推動經濟轉型的同時，亦須在發展與環境保育之間取得適當平衡。' }
+                    ]
+                },
+                {
+                    category: '二、利弊與持份者分析 (Pros, Cons & Stakeholders)',
+                    items: [
+                        { term: '權衡輕重 / 利弊互見', example: '任何公共政策的制定往往利弊互見，當局必須權衡輕重，審慎評估其長遠影響。' },
+                        { term: '持份者訴求 / 凝聚共識', example: '政策推行過程中難免觸及不同持份者的利益，政府宜加強溝通以凝聚社會共識。' },
+                        { term: '公共財政可持續性', example: '在推出惠民措施時，當局必須恪守審慎理財原則，確保公共財政的可持續性。' },
+                        { term: '執行阻力 / 行政成本', example: '若缺乏完善的配套與清晰的執法指引，政策在落實層面恐會遇到較大的執行阻力。' }
+                    ]
+                },
+                {
+                    category: '三、政策建議句式 (Actionable Recommendations)',
+                    items: [
+                        { term: '多管齊下 / 標本兼治', example: '要徹底解決問題，政府必須採取多管齊下、標本兼治的策略，從源頭著手。' },
+                        { term: '循序漸進 / 分階段落實', example: '鑑於社會需時適應新措施，建議當局採取循序漸進的方式，先推行先導計劃再逐步擴展。' },
+                        { term: '公私營合作 (PPP) / 善用市場力量', example: '政府可透過公私營合作模式，引入市場資金與專業管理經驗，提升公共服務效率。' },
+                        { term: '拆牆鬆綁 / 精簡審批程序', example: '相關部門應主動拆牆鬆綁，精簡繁瑣的行政審批程序，為創科產業營造有利營商環境。' }
+                    ]
+                }
+            ],
+            en: [
+                {
+                    category: '1. Introduction & Framing the Dilemma',
+                    items: [
+                        { term: 'Structural bottleneck / pressing challenge', example: 'Hong Kong is grappling with a structural bottleneck in healthcare manpower amid rapid demographic ageing.' },
+                        { term: 'Strike a delicate balance between...', example: 'The Administration must strike a delicate balance between driving economic vitality and upholding fiscal prudence.' },
+                        { term: 'Imperative / Warrant urgent attention', example: 'Formulating a forward-looking talent strategy is imperative to sustain Hong Kong’s global competitiveness.' }
+                    ]
+                },
+                {
+                    category: '2. Weighing Pros, Cons & Stakeholders',
+                    items: [
+                        { term: 'Divergent stakeholder interests', example: 'Reconciling divergent stakeholder interests remains a pivotal hurdle in rolling out environmental levies.' },
+                        { term: 'Fiscal sustainability & cost-effectiveness', example: 'While the subsidy scheme offers immediate relief, its long-term fiscal sustainability warrants rigorous scrutiny.' },
+                        { term: 'Implementation hurdles / Administrative overhead', example: 'Without streamlined cross-bureau coordination, well-intentioned policies may falter due to implementation hurdles.' },
+                        { term: 'Mitigate adverse impacts on vulnerable groups', example: 'Targeted transitional support is essential to mitigate adverse impacts on low-income households.' }
+                    ]
+                },
+                {
+                    category: '3. Actionable Recommendations',
+                    items: [
+                        { term: 'Adopt a multi-pronged approach', example: 'To tackle the issue at its root, the Government should adopt a multi-pronged approach combining legislation and incentives.' },
+                        { term: 'Phased implementation / Pilot scheme', example: 'A phased implementation starting with a regulatory sandbox will allow authorities to iron out operational glitches.' },
+                        { term: 'Leverage Public-Private Partnerships (PPP)', example: 'Leveraging Public-Private Partnerships can harness private sector agility while easing the burden on public coffers.' },
+                        { term: 'Cut red tape / Streamline regulatory procedures', example: 'Relevant bureaux should proactively cut red tape to expedite infrastructure delivery.' }
+                    ]
+                }
+            ]
+        };
+
+        const MOCK_PROMPTS = [
+            {
+                zh: '近年香港面對人口結構高齡化及公營醫療系統負荷沉重的挑戰。政府正積極推動「基層醫療健康藍圖」及大灣區醫療合作。試分析有關政策在執行上的利弊及對不同持份者的影響，並向政府提出具體可行的改善建議。',
+                en: 'To accelerate Hong Kong\'s transition into an international innovation and technology hub, the Government has introduced various measures to attract strategic enterprises and global talent. Discuss the potential benefits and challenges of these initiatives, and recommend practical measures to ensure sustainable economic returns for Hong Kong.'
+            },
+            {
+                zh: '為應對本地勞動人口收縮及個別行業人手短缺，政府推出多項「輸入勞工計劃」及「搶人才」措施。試分析有關政策對香港經濟發展及本地勞工市場的利弊，並向政府提出完善人才與勞工政策的建議。',
+                en: 'Waste reduction and recycling remain critical environmental challenges for Hong Kong as landfills approach saturation. Evaluate the effectiveness and limitations of the Government\'s current waste management strategy, and propose pragmatic measures to foster a circular economy.'
+            },
+            {
+                zh: '隨著市民消費模式轉變及跨境消費趨勢上升，香港零售及餐飲業正面對結構性轉型壓力。政府積極推動「盛事經濟」及旅遊業多元化發展。試分析有關策略的成效與局限，並向政府提出振興本地經濟的可行建議。',
+                en: 'Developing the Northern Metropolis is a cornerstone of Hong Kong\'s long-term land supply and economic integration with the Greater Bay Area. Discuss the major financial and logistical challenges in delivering this mega-project, and suggest viable approaches to ensure timely and cost-effective execution.'
+            },
+            {
+                zh: '政府近年致力推動「智慧城市」建設及電子政務普及化，然而部分長者及基層市民在使用數碼公共服務時仍面對「數碼鴻溝」。試分析推行智慧政務的利弊與持份者影響，並提出兼顧效率與社會共融的建議。',
+                en: 'Hong Kong has implemented time-varying tolls across the three road harbour crossings to alleviate traffic congestion. Assess the impacts of this policy on different road users and public transport efficiency, and recommend further measures to advance smart mobility in the city.'
+            }
+        ];
+
+        // App Runtime State
+        let currentTab = 'dashboard';
+        let checklistState = JSON.parse(localStorage.getItem('jre_checklist')) || DEFAULT_CHECKLIST;
+        let policiesState = JSON.parse(localStorage.getItem('jre_policies')) || DEFAULT_POLICIES;
+        let currentCategory = 'all';
+        let fwLang = 'zh';
+        let activeOutlineFieldId = 'fw-sec-1';
+
+        // Timer State
+        let timerTotalSeconds = 180 * 60;
+        let timerRemainingSeconds = 180 * 60;
+        let timerInterval = null;
+        let isTimerRunning = false;
+
+        // ==================== 2. NAVIGATION & TOAST ====================
+        function switchTab(tabName) {
+            currentTab = tabName;
+            ['dashboard', 'policy', 'framework', 'simulator'].forEach(t => {
+                document.getElementById(`view-${t}`).classList.add('hidden');
+                const btn = document.getElementById(`tab-${t}`);
+                btn.classList.remove('bg-amber-500', 'text-slate-950', 'shadow');
+                btn.classList.add('text-slate-300', 'hover:text-white', 'hover:bg-slate-700/60');
+            });
+            document.getElementById(`view-${tabName}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-${tabName}`);
+            activeBtn.classList.remove('text-slate-300', 'hover:text-white', 'hover:bg-slate-700/60');
+            activeBtn.classList.add('bg-amber-500', 'text-slate-950', 'shadow');
+        }
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const bgClass = type === 'error' ? 'bg-rose-600' : 'bg-slate-900 border border-slate-700';
+            const icon = type === 'error' ? '<i class="fa-solid fa-circle-exclamation text-white"></i>' : '<i class="fa-solid fa-circle-check text-amber-400"></i>';
+            toast.className = `${bgClass} text-white px-4 py-3 rounded-xl shadow-lg text-xs sm:text-sm font-medium flex items-center gap-2.5 transform transition-all duration-300 translate-y-2 opacity-0`;
+            toast.innerHTML = `${icon}<span>${message}</span>`;
+            container.appendChild(toast);
+
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            });
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 2800);
+        }
+
+        // ==================== 3. CHECKLIST LOGIC ====================
+        function renderChecklist() {
+            const container = document.getElementById('daily-checklist');
+            container.innerHTML = '';
+            let doneCount = 0;
+
+            checklistState.forEach((item, idx) => {
+                if (item.done) doneCount++;
+                const div = document.createElement('div');
+                div.onclick = () => toggleChecklistItem(idx);
+                div.className = `p-3.5 rounded-xl border transition cursor-pointer flex items-start gap-3 ${
+                    item.done ? 'bg-emerald-50/60 border-emerald-200' : 'bg-white border-slate-200 hover:border-amber-400'
+                }`;
+                div.innerHTML = `
+                    <div class="mt-0.5 flex-shrink-0 w-5 h-5 rounded-md border flex items-center justify-center transition ${
+                        item.done ? 'bg-emerald-600 border-emerald-600 text-white' : 'border-slate-300 bg-white'
+                    }">
+                        ${item.done ? '<i class="fa-solid fa-check text-xs"></i>' : ''}
+                    </div>
+                    <div class="flex-grow">
+                        <div class="flex items-center gap-2 mb-0.5">
+                            <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-600">${item.tag}</span>
+                        </div>
+                        <p class="text-sm ${item.done ? 'line-through text-slate-400' : 'text-slate-800 font-medium'}">${item.text}</p>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+
+            const pct = Math.round((doneCount / checklistState.length) * 100);
+            document.getElementById('checklist-percent').innerText = `${pct}%`;
+            document.getElementById('checklist-bar').style.width = `${pct}%`;
+            localStorage.setItem('jre_checklist', JSON.stringify(checklistState));
+        }
+
+        function toggleChecklistItem(index) {
+            checklistState[index].done = !checklistState[index].done;
+            renderChecklist();
+            if (checklistState[index].done) {
+                showToast('已完成一項今日備考任務！');
+            }
+        }
+
+        function resetChecklist() {
+            checklistState = checklistState.map(item => ({ ...item, done: false }));
+            renderChecklist();
+            showToast('已重設今日備考清單');
+        }
+
+        // ==================== 4. POLICY BANK LOGIC ====================
+        function filterPolicies(cat) {
+            currentCategory = cat;
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                if (btn.dataset.cat === cat) {
+                    btn.className = 'cat-btn active px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-900 text-white transition';
+                } else {
+                    btn.className = 'cat-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 transition';
+                }
+            });
+            renderPolicies();
+        }
+
+        function renderPolicies() {
+            const list = document.getElementById('policy-list');
+            const query = document.getElementById('policy-search').value.trim().toLowerCase();
+            list.innerHTML = '';
+
+            const filtered = policiesState.filter(p => {
+                const matchCat = currentCategory === 'all' || p.category === currentCategory;
+                const matchQuery = !query ||
+                    p.title.toLowerCase().includes(query) ||
+                    p.background.toLowerCase().includes(query) ||
+                    p.pros.toLowerCase().includes(query) ||
+                    p.cons.toLowerCase().includes(query) ||
+                    p.recommendations.toLowerCase().includes(query);
+                return matchCat && matchQuery;
+            });
+
+            if (filtered.length === 0) {
+                list.innerHTML = `<div class="bg-white p-8 rounded-2xl border border-slate-200 text-center text-slate-500 text-sm">找不到符合條件的政策筆記，請嘗試其他關鍵字或新增筆記。</div>`;
+                return;
+            }
+
+            filtered.forEach(pol => {
+                const card = document.createElement('article');
+                card.className = 'bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden';
+                card.innerHTML = `
+                    <div class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2">
+                        <div class="flex items-center gap-2.5">
+                            <span class="px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-100 text-amber-800">${escapeHtml(pol.category)}</span>
+                            <h3 class="text-base sm:text-lg font-bold text-slate-900">${escapeHtml(pol.title)}</h3>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="sendPolicyToFramework('${pol.id}')" class="text-xs bg-white hover:bg-amber-50 text-slate-700 hover:text-amber-700 border border-slate-200 px-3 py-1.5 rounded-lg font-medium transition">
+                                <i class="fa-solid fa-arrow-up-right-from-square mr-1"></i>套用至寫作框架
+                            </button>
+                            ${pol.custom ? `<button onclick="deleteCustomPolicy('${pol.id}')" class="text-xs text-rose-500 hover:bg-rose-50 px-2.5 py-1.5 rounded-lg transition" title="刪除筆記"><i class="fa-solid fa-trash"></i></button>` : ''}
+                        </div>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <div>
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1"><i class="fa-solid fa-circle-info text-slate-400 mr-1"></i>背景與現況 (Background)</h4>
+                            <p class="text-sm text-slate-700 leading-relaxed whitespace-pre-line">${escapeHtml(pol.background)}</p>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="p-4 rounded-xl bg-emerald-50/60 border border-emerald-200/80">
+                                <h4 class="text-xs font-bold text-emerald-800 mb-1.5"><i class="fa-solid fa-thumbs-up mr-1"></i>正面效益 (Pros)</h4>
+                                <p class="text-xs sm:text-sm text-slate-700 leading-relaxed whitespace-pre-line">${escapeHtml(pol.pros)}</p>
+                            </div>
+                            <div class="p-4 rounded-xl bg-rose-50/60 border border-rose-200/80">
+                                <h4 class="text-xs font-bold text-rose-800 mb-1.5"><i class="fa-solid fa-triangle-exclamation mr-1"></i>潛在弊端與挑戰 (Cons)</h4>
+                                <p class="text-xs sm:text-sm text-slate-700 leading-relaxed whitespace-pre-line">${escapeHtml(pol.cons)}</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200/80">
+                                <h4 class="text-xs font-bold text-slate-800 mb-1.5"><i class="fa-solid fa-users text-slate-600 mr-1"></i>持份者影響分析 (Stakeholders)</h4>
+                                <p class="text-xs sm:text-sm text-slate-700 leading-relaxed whitespace-pre-line">${escapeHtml(pol.stakeholders)}</p>
+                            </div>
+                            <div class="p-4 rounded-xl bg-amber-50/60 border border-amber-200/80">
+                                <h4 class="text-xs font-bold text-amber-900 mb-1.5"><i class="fa-solid fa-lightbulb text-amber-600 mr-1"></i>可行建議 (Recommendations)</h4>
+                                <p class="text-xs sm:text-sm text-slate-700 leading-relaxed whitespace-pre-line">${escapeHtml(pol.recommendations)}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                list.appendChild(card);
+            });
+        }
+
+        function toggleAddPolicyModal(show) {
+            const modal = document.getElementById('add-policy-modal');
+            if (show) modal.classList.remove('hidden');
+            else modal.classList.add('hidden');
+        }
+
+        function saveCustomPolicy(e) {
+            e.preventDefault();
+            const newPol = {
+                id: 'custom_' + Date.now(),
+                category: document.getElementById('new-pol-cat').value,
+                title: document.getElementById('new-pol-title').value.trim(),
+                background: document.getElementById('new-pol-bg').value.trim(),
+                pros: document.getElementById('new-pol-pros').value.trim(),
+                cons: document.getElementById('new-pol-cons').value.trim(),
+                stakeholders: document.getElementById('new-pol-stake').value.trim(),
+                recommendations: document.getElementById('new-pol-rec').value.trim(),
+                custom: true
+            };
+            policiesState.unshift(newPol);
+            localStorage.setItem('jre_policies', JSON.stringify(policiesState));
+            document.getElementById('add-policy-form').reset();
+            toggleAddPolicyModal(false);
+            filterPolicies('all');
+            showToast('已成功新增自訂政策筆記！');
+        }
+
+        function deleteCustomPolicy(id) {
+            policiesState = policiesState.filter(p => p.id !== id);
+            localStorage.setItem('jre_policies', JSON.stringify(policiesState));
+            renderPolicies();
+            showToast('已刪除該自訂筆記');
+        }
+
+        function sendPolicyToFramework(id) {
+            const pol = policiesState.find(p => p.id === id);
+            if (!pol) return;
+            switchTab('framework');
+            switchFrameworkLang('zh');
+            document.getElementById('fw-topic').value = `試分析「${pol.title}」的利弊及對持份者的影響，並提出可行建議。`;
+            document.getElementById('fw-sec-1').value = pol.background;
+            document.getElementById('fw-sec-2').value = `【正面效益】\n${pol.pros}\n\n【潛在弊端】\n${pol.cons}`;
+            document.getElementById('fw-sec-3').value = pol.stakeholders;
+            document.getElementById('fw-sec-4').value = pol.recommendations;
+            showToast('已將政策分析資料匯入寫作框架！');
+        }
+
+        // ==================== 5. ESSAY FRAMEWORK BUILDER LOGIC ====================
+        function switchFrameworkLang(lang) {
+            fwLang = lang;
+            const btnZh = document.getElementById('fw-lang-zh');
+            const btnEn = document.getElementById('fw-lang-en');
+
+            if (lang === 'zh') {
+                btnZh.className = 'px-4 py-2 rounded-lg text-sm font-semibold bg-white text-slate-900 shadow-sm transition';
+                btnEn.className = 'px-4 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-900 transition';
+                document.getElementById('fw-title').innerText = '中文政策分析寫作大綱（建議字數：1,200 - 1,600 字）';
+                document.getElementById('lbl-topic').innerText = '擬定題目 / 政策議題 (Essay Topic)';
+                document.getElementById('fw-topic').placeholder = '例如：試分析香港推行「低空經濟」的機遇與挑戰，並向政府提出可行建議。';
+                document.getElementById('vocab-panel-title').innerText = '高分政府公文詞彙與句式庫';
+            } else {
+                btnEn.className = 'px-4 py-2 rounded-lg text-sm font-semibold bg-white text-slate-900 shadow-sm transition';
+                btnZh.className = 'px-4 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-900 transition';
+                document.getElementById('fw-title').innerText = 'English Policy Essay Outliner (Target: 700 - 900 words)';
+                document.getElementById('lbl-topic').innerText = 'Essay Prompt / Policy Issue';
+                document.getElementById('fw-topic').placeholder = 'e.g., Discuss the pros and cons of developing the low-altitude economy in Hong Kong and propose viable recommendations.';
+                document.getElementById('vocab-panel-title').innerText = 'High-Scoring Policy Phrases & Sentence Patterns';
+            }
+
+            renderFrameworkSections();
+            renderVocabBank();
+        }
+
+        function renderFrameworkSections() {
+            const container = document.getElementById('fw-sections');
+            const sections = fwLang === 'zh' ? [
+                { id: 'fw-sec-1', title: '第一部分：引言 (Introduction — 佔約 15%)', hint: '點出政策背景與數據現況、界定核心矛盾，並提出清晰立場（Thesis Statement）。' },
+                { id: 'fw-sec-2', title: '第二部分：利弊權衡分析 (Pros & Cons — 佔約 30%)', hint: '客觀分析政策的預期成效（經濟、社會效益）與潛在局限（財政承擔、執行難度）。' },
+                { id: 'fw-sec-3', title: '第三部分：持份者影響評估 (Stakeholders — 佔約 20%)', hint: '分點剖析市民、業界／商界、弱勢社群及政府庫房所受的正面或負面影響。' },
+                { id: 'fw-sec-4', title: '第四部分：多管齊下可行建議 (Recommendations — 佔約 25%)', hint: '按「短期紓緩」與「中長期制度優化」提出具行政可行性的建議（立法、資助、PPP、教育）。' },
+                { id: 'fw-sec-5', title: '第五部分：總結 (Conclusion — 佔約 10%)', hint: '總結全文核心觀點，重申平衡各方利益的重要性，展現前瞻性視野。' }
+            ] : [
+                { id: 'fw-sec-1', title: '1. Introduction (~15%)', hint: 'Establish policy context, identify the core dilemma, and state a clear, balanced thesis.' },
+                { id: 'fw-sec-2', title: '2. Critical Evaluation of Pros & Cons (~30%)', hint: 'Analyze intended policy merits alongside fiscal, operational, or societal drawbacks.' },
+                { id: 'fw-sec-3', title: '3. Stakeholder Impact Analysis (~20%)', hint: 'Examine how the policy affects citizens, the business sector, vulnerable groups, and public coffers.' },
+                { id: 'fw-sec-4', title: '4. Actionable Recommendations (~25%)', hint: 'Propose pragmatic short-term quick wins and long-term structural reforms (regulation, PPP, incentives).' },
+                { id: 'fw-sec-5', title: '5. Conclusion (~10%)', hint: 'Synthesize key arguments and reinforce a forward-looking governance vision.' }
+            ];
+
+            container.innerHTML = sections.map(sec => `
+                <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 focus-within:border-amber-500 transition">
+                    <label for="${sec.id}" class="block text-xs font-bold text-slate-800 mb-0.5">${sec.title}</label>
+                    <p class="text-[11px] text-slate-500 mb-2">${sec.hint}</p>
+                    <textarea id="${sec.id}" onfocus="activeOutlineFieldId='${sec.id}'" rows="3" class="w-full p-2.5 bg-white border border-slate-200 rounded-lg text-xs sm:text-sm focus:outline-none"></textarea>
+                </div>
+            `).join('');
+            activeOutlineFieldId = 'fw-sec-1';
+        }
+
+        function renderVocabBank() {
+            const container = document.getElementById('vocab-list');
+            const groups = VOCAB_DATA[fwLang];
+            container.innerHTML = groups.map(g => `
+                <div class="space-y-2">
+                    <h4 class="text-xs font-bold text-slate-700 bg-slate-100 px-2.5 py-1.5 rounded-lg">${g.category}</h4>
+                    <div class="space-y-2">
+                        ${g.items.map(item => `
+                            <div onclick="insertPhraseToOutline('${escapeQuotes(item.example)}')" class="p-2.5 rounded-xl border border-slate-200 hover:border-amber-400 hover:bg-amber-50/40 cursor-pointer transition group">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-xs font-bold text-amber-700">${item.term}</span>
+                                    <span class="text-[10px] text-slate-400 group-hover:text-amber-600"><i class="fa-solid fa-plus-circle mr-0.5"></i>點擊插入</span>
+                                </div>
+                                <p class="text-xs text-slate-600 leading-relaxed">${item.example}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function insertPhraseToOutline(text) {
+            const field = document.getElementById(activeOutlineFieldId);
+            if (!field) return;
+            const currentVal = field.value;
+            field.value = currentVal ? `${currentVal}\n${text}` : text;
+            field.focus();
+            showToast('已將高分句式插入至大綱欄位');
+        }
+
+        function loadSampleOutline() {
+            if (fwLang === 'zh') {
+                document.getElementById('fw-topic').value = '試分析香港發展「低空經濟」的機遇與挑戰，並向政府提出可行建議。';
+                document.getElementById('fw-sec-1').value = '隨著國家將低空經濟列為戰略性新興產業，香港特區政府亦成立「發展低空經濟工作組」。在推動經濟多元化轉型的背景下，如何善用香港科研與航空樞紐優勢發展低空經濟，同時妥善應對高密度城市環境下的安全與監管挑戰，已成為刻不容緩的課題。';
+                document.getElementById('fw-sec-2').value = '【正面機遇】帶動創科測試認證產業鏈，提升偏遠地區物流及基建巡檢效率。\n【潛在挑戰】維港兩岸空域繁忙、高樓密集易造成訊號干擾；現行法例對超視距飛行仍有較多限制。';
+                document.getElementById('fw-sec-3').value = '• 創科及物流業界：獲得新商業應用場景，但初期合規及保險成本高。\n• 市民大眾：享受更便捷配送服務，但關注低空噪音及家居私隱問題。\n• 民航及執法部門：需升級空域監管科技，在鼓勵創新與保障公眾安全之間取得平衡。';
+                document.getElementById('fw-sec-4').value = '• 短期（循序漸進）：在科學園、數碼港及離島推行「監管沙盒」試點，累積安全數據。\n• 中長期（多管齊下）：檢討《小型無人機令》以拆牆鬆綁，並加強與大灣區城市對接跨境低空航路標準。';
+                document.getElementById('fw-sec-5').value = '總括而言，低空經濟為香港注入新質生產力帶來契機。政府宜採取多管齊下策略，透過先導沙盒與法規現代化，在安全可控的前提下釋放低空經濟潛力。';
+            } else {
+                document.getElementById('fw-topic').value = 'Discuss the benefits and challenges of attracting global talent to Hong Kong, and recommend practical measures to retain them.';
+                document.getElementById('fw-sec-1').value = 'Amid a shrinking local workforce and intense regional competition, the Hong Kong Government has rolled out aggressive talent admission schemes such as the Top Talent Pass Scheme. While these initiatives address immediate manpower shortages, ensuring long-term retention and social integration remains imperative.';
+                document.getElementById('fw-sec-2').value = 'Pros: Injects high-skilled human capital, revitalizes innovation and financial sectors, and broadens the tax base.\nCons: Places additional short-term pressure on housing rentals and international school places; risks mismatch between incoming talent skills and local market needs.';
+                document.getElementById('fw-sec-3').value = '• Employers & SMEs: Benefit from a wider talent pool, though SMEs face higher onboarding and language adaptation costs.\n• Incoming Talent & Families: Value Hong Kong’s low tax regime, yet encounter high living costs and cultural adjustment hurdles.\n• Local Workforce: Gains from economic expansion, though concerns over job competition require clear communication.';
+                document.getElementById('fw-sec-4').value = '• Short-term: Strengthen the Hong Kong Talent Engage office to provide one-stop job matching, housing advice, and Cantonese integration courses.\n• Long-term: Align talent admission criteria with strategic industry roadmaps and leverage Public-Private Partnerships to expand talent accommodation.';
+                document.getElementById('fw-sec-5').value = 'In conclusion, attracting talent is only the first step; sustainable success hinges on a holistic ecosystem that fosters career growth and community belonging.';
+            }
+            showToast('已載入示範大綱');
+        }
+
+        function copyOutline() {
+            const topic = document.getElementById('fw-topic').value;
+            let text = `【題目】${topic}\n\n`;
+            for (let i = 1; i <= 5; i++) {
+                const el = document.getElementById(`fw-sec-${i}`);
+                const label = el.previousElementSibling.previousElementSibling.innerText;
+                text += `${label}\n${el.value}\n\n`;
+            }
+            copyTextFallback(text, '已複製完整寫作大綱至剪貼簿！');
+        }
+
+        // ==================== 6. MOCK EXAM SIMULATOR & TIMER ====================
+        function setTimerMode() {
+            pauseTimer();
+            const mins = parseInt(document.getElementById('timer-mode').value, 10);
+            timerTotalSeconds = mins * 60;
+            timerRemainingSeconds = timerTotalSeconds;
+            updateTimerDisplay();
+            document.getElementById('timer-phase-badge').innerText = '已切換模式';
+            document.getElementById('timer-advice').innerText = mins === 180
+                ? '全卷 180 分鐘模式：建議每篇 90 分鐘（15 分鐘大綱 + 65 分鐘寫作 + 10 分鐘校對）。'
+                : mins === 90
+                ? '單篇 90 分鐘模式：前 15 分鐘專注審題與列大綱，切勿急於下筆。'
+                : '15 分鐘快速列大綱訓練：訓練在極短時間內建立「利弊 + 持份者 + 建議」框架。';
+        }
+
+        function startTimer() {
+            if (isTimerRunning) return;
+            isTimerRunning = true;
+            document.getElementById('timer-phase-badge').innerText = '計時進行中';
+            document.getElementById('timer-phase-badge').className = 'inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/30';
+
+            timerInterval = setInterval(() => {
+                if (timerRemainingSeconds > 0) {
+                    timerRemainingSeconds--;
+                    updateTimerDisplay();
+                    checkTimerMilestones();
+                } else {
+                    pauseTimer();
+                    document.getElementById('timer-phase-badge').innerText = '考試時間結束！';
+                    document.getElementById('timer-phase-badge').className = 'inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold bg-rose-500/20 text-rose-300 border border-rose-500/30';
+                    showToast('模擬考試時間到！請停止作答並檢視字數與結構。', 'error');
+                }
+            }, 1000);
+        }
+
+        function pauseTimer() {
+            isTimerRunning = false;
+            clearInterval(timerInterval);
+            if (timerRemainingSeconds > 0 && timerRemainingSeconds < timerTotalSeconds) {
+                document.getElementById('timer-phase-badge').innerText = '已暫停';
+            }
+        }
+
+        function resetTimer() {
+            pauseTimer();
+            timerRemainingSeconds = timerTotalSeconds;
+            updateTimerDisplay();
+            document.getElementById('timer-phase-badge').innerText = '準備就緒';
+        }
+
+        function updateTimerDisplay() {
+            const hrs = Math.floor(timerRemainingSeconds / 3600);
+            const mins = Math.floor((timerRemainingSeconds % 3600) / 60);
+            const secs = timerRemainingSeconds % 60;
+            document.getElementById('timer-display').innerText =
+                `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        }
+
+        function checkTimerMilestones() {
+            const elapsed = timerTotalSeconds - timerRemainingSeconds;
+            if (timerTotalSeconds === 180 * 60 && elapsed === 90 * 60) {
+                showToast('已過 90 分鐘！請確保你已完成第一篇文章並切換至第二篇！');
+            } else if (timerRemainingSeconds === 10 * 60) {
+                showToast('最後 10 分鐘！請預留時間總結並校對錯別字及文法。');
+            }
+        }
+
+        function generateRandomPrompt() {
+            const random = MOCK_PROMPTS[Math.floor(Math.random() * MOCK_PROMPTS.length)];
+            document.getElementById('mock-prompt-zh').innerText = random.zh;
+            document.getElementById('mock-prompt-en').innerText = random.en;
+            showToast('已更新一組中英模擬試題');
+        }
+
+        let currentEditorPaper = 'zh';
+        function switchEditorPaper(paper) {
+            currentEditorPaper = paper;
+            const tabZh = document.getElementById('paper-tab-zh');
+            const tabEn = document.getElementById('paper-tab-en');
+            const edZh = document.getElementById('essay-editor-zh');
+            const edEn = document.getElementById('essay-editor-en');
+
+            if (paper === 'zh') {
+                tabZh.className = 'px-4 py-1.5 rounded-lg text-xs sm:text-sm font-semibold bg-white text-slate-900 shadow-sm transition';
+                tabEn.className = 'px-4 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-slate-600 hover:text-slate-900 transition';
+                edZh.classList.remove('hidden');
+                edEn.classList.add('hidden');
+            } else {
+                tabEn.className = 'px-4 py-1.5 rounded-lg text-xs sm:text-sm font-semibold bg-white text-slate-900 shadow-sm transition';
+                tabZh.className = 'px-4 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-slate-600 hover:text-slate-900 transition';
+                edEn.classList.remove('hidden');
+                edZh.classList.add('hidden');
+            }
+        }
+
+        function handleEditorInput() {
+            const zhText = document.getElementById('essay-editor-zh').value;
+            const enText = document.getElementById('essay-editor-en').value;
+
+            // Count Chinese characters (CJK unified ideographs + Chinese punctuation)
+            const zhMatches = zhText.match(/[\u4e00-\u9fa5]/g);
+            const zhCount = zhMatches ? zhMatches.length : 0;
+
+            // Count English words
+            const enClean = enText.trim();
+            const enCount = enClean ? enClean.split(/\s+/).length : 0;
+
+            document.getElementById('count-zh').innerText = zhCount;
+            document.getElementById('count-en').innerText = enCount;
+
+            localStorage.setItem('jre_draft_zh', zhText);
+            localStorage.setItem('jre_draft_en', enText);
+        }
+
+        function copyDraft() {
+            const text = currentEditorPaper === 'zh'
+                ? document.getElementById('essay-editor-zh').value
+                : document.getElementById('essay-editor-en').value;
+            copyTextFallback(text, '已複製當前作答內容！');
+        }
+
+        function downloadDraftTxt() {
+            const promptZh = document.getElementById('mock-prompt-zh').innerText;
+            const promptEn = document.getElementById('mock-prompt-en').innerText;
+            const zhText = document.getElementById('essay-editor-zh').value;
+            const enText = document.getElementById('essay-editor-en').value;
+
+            const content = `=== JRE 聯合招聘考試模擬作答存檔 ===\n匯出時間：${new Date().toLocaleString('zh-HK')}\n\n【中文試題】\n${promptZh}\n\n【中文作答】\n${zhText}\n\n====================================\n\n【English Prompt】\n${promptEn}\n\n【English Essay】\n${enText}\n`;
+            const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `JRE_Mock_Essay_${new Date().toISOString().slice(0, 10)}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('已匯出中英作答檔案 (.txt)');
+        }
+
+        function clearCurrentDraft() {
+            if (currentEditorPaper === 'zh') {
+                document.getElementById('essay-editor-zh').value = '';
+            } else {
+                document.getElementById('essay-editor-en').value = '';
+            }
+            handleEditorInput();
+            showToast('已清空當前作答區');
+        }
+
+        // ==================== 7. UTILITIES & INIT ====================
+        function copyTextFallback(text, successMsg) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showToast(successMsg);
+            } catch (err) {
+                showToast('複製失敗，請手動選取複製', 'error');
+            }
+            document.body.removeChild(textarea);
+        }
+
+        function escapeHtml(str) {
+            return String(str)
+                .replace(/&/g, '&')
+                .replace(/</g, '<')
+                .replace(/>/g, '>')
+                .replace(/"/g, '"')
+                .replace(/'/g, '&#039;');
+        }
+
+        function escapeQuotes(str) {
+            return String(str).replace(/'/g, "\\'").replace(/"/g, '"');
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderChecklist();
+            renderPolicies();
+            renderFrameworkSections();
+            renderVocabBank();
+
+            // Restore saved drafts
+            const savedZh = localStorage.getItem('jre_draft_zh');
+            const savedEn = localStorage.getItem('jre_draft_en');
+            if (savedZh) document.getElementById('essay-editor-zh').value = savedZh;
+            if (savedEn) document.getElementById('essay-editor-en').value = savedEn;
+            handleEditorInput();
+        });
+    </script>
+</body>
+</html>
