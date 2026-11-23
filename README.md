@@ -1,2 +1,28 @@
-# jre-exam-prep-system
-JRE 聯合招聘考試實戰備考系統 | 政策分析・寫作框架・限時模擬 (Joint Recruitment Examination Prep System for AO/EO etc.)
+# JRE 聯合招聘考試實戰備考系統
+
+**Joint Recruitment Examination (JRE) Prep System**  
+專為香港政府政務主任（AO）、行政主任（EO）、貿易主任、運輸主任等職系考生設計的單頁互動備考工具。
+
+## 功能一覽
+
+- **備考總覽與清單**：每日備考習慣追蹤、立法會文件拆解心法、建議時間分配
+- **時事與政策分析庫**：預載房屋、醫療、創科、環保、交通、人口等議題分析（背景／利弊／持份者／建議），可自行新增筆記
+- **中英寫作框架生成器**：標準五段式行政分析大綱 + 高分政府公文詞彙／句式一鍵插入
+- **3 小時實戰模擬器**：全卷／單篇／15 分鐘大綱模式計時、隨機模擬試題、雙語作答區、字數統計、草稿本地儲存、匯出 .txt
+
+所有資料（清單進度、自訂政策筆記、草稿）均自動儲存於瀏覽器 `localStorage`，無需登入。
+
+## 使用方式
+
+1. 直接開啟 [index.html](https://winkstar440.github.io/jre-exam-prep-system/)（啟用 GitHub Pages 後）或本機開啟 `index.html`
+2. 切換上方四個分頁即可使用各功能
+3. 建議每週至少完成 1 篇中文 + 1 篇英文計時模擬
+
+## 技術
+
+- 純前端：HTML + Tailwind CSS (CDN) + Vanilla JS
+- 無後端、無依賴安裝，開箱即用
+
+## License
+
+MIT — 自由使用與修改。
